@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087c42">
+<title>KachraLens | Report History</title>
+<link rel="icon" href="assets/images/favicon.png">
+<style>
+:root{--green:#087c42;--deep:#07512f;--ink:#17251d;--muted:#617168;--line:#dce8df;--soft:#f3faf4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#f5faf6;font-size:14px}
+a{color:inherit;text-decoration:none}
+.topbar{min-height:76px;padding:9px 3.5%;display:flex;align-items:center;justify-content:space-between;gap:20px;background:rgba(255,255,255,.97);border-bottom:3px solid var(--green)}
+.brand{display:flex;align-items:center;gap:11px;min-width:245px}.brand img{width:54px;height:54px;object-fit:contain}
+.brand h2{font-size:27px;line-height:1.1;color:var(--deep);letter-spacing:-.7px}.brand h2 span{color:#111}
+.brand p{font-size:11px;color:#526457;margin-top:4px}
+.nav{display:flex;align-items:center;justify-content:flex-end;gap:22px;font-size:13px;font-weight:700}.nav a{padding:10px 0}.nav a:hover{color:var(--green)}
+.nav .active,.nav .new{background:var(--green);color:#fff;padding:11px 15px;border-radius:8px}
+.hero{min-height:245px;padding:35px 18px;display:grid;place-items:center;text-align:center;background:linear-gradient(90deg,rgba(255,255,255,.10),rgba(255,255,255,.30),rgba(255,255,255,.10)),url("assets/images/bg-dashboard.jpg") center 48%/cover no-repeat;border-bottom:1px solid #dce8df}
+.hero h1{font-size:clamp(32px,3.5vw,45px);letter-spacing:-1px;margin-bottom:10px;color:#111}.hero h1 span{color:var(--green)}.hero p{font-size:15px;color:#26382d;line-height:1.6}
+.wrap{width:min(1200px,94%);margin:auto}\nmain.wrap{position:relative;isolation:isolate;padding:1px 0 2px}\nmain.wrap::before{content:"";position:absolute;inset:0 -4.25vw;z-index:-1;background:linear-gradient(rgba(244,250,245,.50),rgba(244,250,245,.70)),url("assets/images/bg-dashboard.jpg") center/cover fixed no-repeat;opacity:.95}
+.toolbar{margin:24px 0 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.toolbar h2{font-size:22px;color:var(--deep);margin-bottom:5px}.toolbar p{color:var(--muted);font-size:13px}
+.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 15px;border:1px solid #b9d8c2;border-radius:8px;background:#fff;color:var(--green);font-weight:700;cursor:pointer}.btn.primary{background:var(--green);border-color:var(--green);color:#fff}.btn:hover{filter:brightness(.96)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}
+.stat{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 5px 17px #143f1d09;display:flex;gap:13px;align-items:center}
+.stat-icon{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:23px;background:#e2f6e8;color:var(--green);flex-shrink:0}
+.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.stat strong{font-size:27px;color:var(--deep);line-height:1.1}
+.panel{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 5px 18px #143f1d09;margin-bottom:30px}
+.panel-head{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;border-bottom:1px solid #e8eee9}
+.panel-head h3{font-size:18px;color:var(--deep);margin-bottom:5px}.panel-head p{font-size:12px;color:var(--muted)}
+.filters{display:flex;gap:9px;flex-wrap:wrap}.filters input,.filters select{padding:10px 12px;border:1px solid #d5e1d7;border-radius:8px;background:#fff;outline:none;color:var(--ink);min-width:145px}.filters input:focus,.filters select:focus{border-color:var(--green)}
+.table-wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:850px}th,td{text-align:left;padding:15px 18px;border-bottom:1px solid #edf1ed;font-size:13px}th{background:#f6faf6;color:#56675b;font-size:11px;letter-spacing:.5px;text-transform:uppercase}tbody tr:hover{background:#fbfdfb}tbody tr:last-child td{border-bottom:0}
+.report-title{font-weight:700;color:#203b2a;margin-bottom:5px}.subtext{font-size:11px;color:var(--muted)}
+.pill{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:800;white-space:nowrap}
+.pending{background:#fff2d8;color:#8b5a00}.progress{background:#e3efff;color:#235ba6}.resolved{background:#e0f6e6;color:#116436}.high{background:#ffe5e2;color:#a52b24}.medium{background:#fff1d9;color:#8b5a00}.low{background:#e4f4e8;color:#1a6c3a}
+.empty{display:none;padding:38px 18px;text-align:center;color:var(--muted);line-height:1.8}.empty strong{display:block;font-size:16px;color:var(--deep);margin-bottom:4px}
+.pagination{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 20px;border-top:1px solid #e8eee9;color:var(--muted);font-size:12px;flex-wrap:wrap}
+.footer{color:#073d29;text-align:center;background:linear-gradient(0deg,rgba(255,255,255,.58),rgba(255,255,255,.10)),url("assets/images/bg-dashboard.jpg") center 72%/cover no-repeat;border-top:1px solid #c8e1cf}
+.tricolour{display:flex;height:9px}.tricolour span{flex:1}.saffron{background:#ff9933}.white-band{background:#fff}.india-green{background:#138808}
+.footer-content{padding:16px 15px 20px}.emblem{width:58px;height:58px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;border:0;border-radius:0;overflow:hidden}
+.emblem img{display:block;width:100%;height:100%;max-width:58px;max-height:58px;object-fit:contain}
+.emblem img{display:block;width:100%;height:100%;max-width:58px;max-height:58px;object-fit:contain}
+.footer strong{font-size:14px}.slogan{margin:5px 0;font-size:17px;font-weight:800;font-style:italic;color:#064b2a}.footer p{font-size:12px;margin:5px 0 0}
+@media(max-width:950px){.topbar{flex-wrap:wrap;padding:12px 4%}.nav{gap:13px;flex-wrap:wrap}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.brand{min-width:0}.brand h2{font-size:22px}.brand img{width:45px;height:45px}.nav{width:100%;justify-content:space-between;gap:7px;font-size:12px}.nav .active,.nav .new{padding:9px}.hero{min-height:185px}.stats{grid-template-columns:1fr 1fr;gap:9px}.stat{padding:12px;gap:9px}.stat-icon{width:38px;height:38px;font-size:19px}.stat strong{font-size:23px}.stat small{font-size:11px}.filters{width:100%}.filters input,.filters select{min-width:0;flex:1;width:100%}.toolbar h2{font-size:20px}.slogan{font-size:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="assets/images/logo.png" alt="KachraLens logo"><div><h2>Kachra<span>Lens</span></h2><p>See. Report. Cleaner Tomorrow.</p></div></a>
+  <nav class="nav"><a href="index.html">⌂ Home</a><a href="dashboard.html">▦ Dashboard</a><a href="report.html">▧ Report</a><a class="active" href="history.html">▣ History</a><a href="index.html#about">ⓘ About</a><a class="new" href="report.html">＋ New Report</a></nav>
+</header>
+<section class="hero"><div><h1>Report <span>History</span></h1><p>Track reported waste issues and follow their progress.<br>Every report is a step toward a cleaner tomorrow.</p></div></section>
+<main class="wrap">
+  <div class="toolbar"><div><h2>All Reports</h2><p>Search and filter your reports by status, category or location.</p></div><div class="actions"><button class="btn" id="clear-reports-btn" type="button" style="border-color:#b42318;color:#b42318">✕ Clear All Reports</button><button class="btn" id="export-btn" type="button">⇩ Export CSV</button><a class="btn primary" href="report.html">＋ Create Report</a></div></div>
+  <section class="stats">
+    <div class="stat"><div class="stat-icon">▤</div><div><small>Total reports</small><strong id="total-count">6</strong></div></div>
+    <div class="stat"><div class="stat-icon">◷</div><div><small>Pending</small><strong id="pending-count">2</strong></div></div>
+    <div class="stat"><div class="stat-icon">↻</div><div><small>In progress</small><strong id="progress-count">2</strong></div></div>
+    <div class="stat"><div class="stat-icon">✓</div><div><small>Resolved</small><strong id="resolved-count">2</strong></div></div>
+  </section>
+  <section class="panel">
+    <div class="panel-head"><div><h3>Report records</h3><p>Sample records shown until this page is connected to the backend API.</p></div>
+      <div class="filters"><input id="search" type="search" placeholder="Search reports…" aria-label="Search reports"><select id="status-filter" aria-label="Filter by status"><option value="">All statuses</option><option value="Pending">Pending</option><option value="In Progress">In progress</option><option value="Resolved">Resolved</option></select><select id="category-filter" aria-label="Filter by category"><option value="">All categories</option><option>Plastic waste</option><option>Household waste</option><option>Construction waste</option><option>Organic waste</option><option>Electronic waste</option><option>Other</option></select></div>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Report</th><th>Location</th><th>Category</th><th>Date</th><th>Priority</th><th>Status</th><th>Solved Here / Verify</th></tr></thead><tbody id="report-rows"></tbody></table></div>
+    <div id="empty-state" class="empty"><strong>No matching reports found</strong>Try changing your search or filters.</div>
+    <div class="pagination"><span id="result-count">Showing 6 sample reports</span><span>Demo data · API connection pending</span></div>
+  </section>
+</main>
+<input id="after-image-input" type="file" accept="image/png,image/jpeg" hidden>
+<footer class="footer"><div class="tricolour"><span class="saffron"></span><span class="white-band"></span><span class="india-green"></span></div><div class="footer-content"><div class="emblem"><img src="assets/images/ashoka-stambh.png" alt="Ashoka Lion Capital"></div><strong>KachraLens — See. Report. Cleaner Tomorrow.</strong><p class="slogan">स्वच्छ भारत का इरादा कर लिया हमने</p><p>© 2026 KachraLens. Together for a cleaner India. 🌿</p></div></footer>
+<script>
+(() => {
+ const API_BASE='http://127.0.0.1:8000';
+ const tbody=document.getElementById('report-rows');
+ const search=document.getElementById('search');
+ const statusFilter=document.getElementById('status-filter');
+ const categoryFilter=document.getElementById('category-filter');
+ const emptyState=document.getElementById('empty-state');
+ const resultCount=document.getElementById('result-count');
+ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const meta=description=>{
+   const out={};
+   String(description||'').split(/\r?\n/).forEach(line=>{
+     const m=line.match(/^(Report title|Location|Category|Citizen requested priority|Description):\s*(.*)$/i);
+     if(m) out[m[1].toLowerCase()]=m[2].trim();
+   });
+   return out;
+ };
+ const niceStatus=s=>({pending:'Pending',partially_solved:'In Progress',solved:'Resolved'}[String(s||'pending').toLowerCase()]||String(s||'Pending'));
+ const nicePriority=s=>String(s||'low').charAt(0).toUpperCase()+String(s||'low').slice(1).toLowerCase();
+ let reports=[];
+ let filteredReports=[];
+ function normalize(r){
+   const m=meta(r.description);
+   return {
+     id:'KL-'+String(r.id).padStart(4,'0'),
+     title:m['report title']||r.waste_type||r.problem_type||'Waste report',
+     location:m.location||(r.latitude!=null&&r.longitude!=null?`${r.latitude}, ${r.longitude}`:'Location not provided'),
+     category:m.category||r.waste_type||r.problem_type||'Unknown',
+     date:r.created_at ? new Date(r.created_at).toISOString().slice(0,10) : '',
+     priority:nicePriority(r.priority),
+     status:niceStatus(r.status),
+     solvedLocation:(r.solved_latitude!=null&&r.solved_longitude!=null)?`${Number(r.solved_latitude).toFixed(6)}, ${Number(r.solved_longitude).toFixed(6)}`:'',
+     raw:r
+   };
+ }
+ function render(){
+   const q=search.value.trim().toLowerCase(), st=statusFilter.value, cat=categoryFilter.value;
+   filteredReports=reports.filter(r=>(!q||[r.id,r.title,r.location,r.category,r.priority,r.status].some(v=>String(v).toLowerCase().includes(q)))&&(!st||r.status===st)&&(!cat||r.category.toLowerCase()===cat.toLowerCase()));
+   tbody.innerHTML=filteredReports.map(r=>`<tr><td><div class="report-title">${esc(r.title)}</div><div class="subtext">${esc(r.id)}</div></td><td>${esc(r.location)}</td><td>${esc(r.category)}</td><td>${r.date?new Date(r.date+'T00:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'}</td><td><span class="pill ${esc(r.priority.toLowerCase())}">${esc(r.priority)}</span></td><td><span class="pill ${r.status==='Pending'?'pending':r.status==='In Progress'?'progress':'resolved'}">${esc(r.status)}</span></td><td>${r.solvedLocation&&r.status==='Resolved'?`<strong style="color:#087c42">✓ Solved Here</strong><div class="subtext">📍 ${esc(r.solvedLocation)}</div>`:`${r.solvedLocation?`<div class="subtext">Last checked: 📍 ${esc(r.solvedLocation)}</div>`:''}<button class="btn verify-btn" type="button" data-report-id="${Number(r.raw.id)}" style="padding:8px 10px;white-space:nowrap">📍 Verify / Solved Here</button>`}</td></tr>`).join('');
+   emptyState.style.display=filteredReports.length?'none':'block';
+   resultCount.textContent=`Showing ${filteredReports.length} of ${reports.length} real reports`;
+   document.getElementById('total-count').textContent=reports.length;
+   document.getElementById('pending-count').textContent=reports.filter(r=>r.status==='Pending').length;
+   document.getElementById('progress-count').textContent=reports.filter(r=>r.status==='In Progress').length;
+   document.getElementById('resolved-count').textContent=reports.filter(r=>r.status==='Resolved').length;
+ }
+ async function loadReports(){
+   try{
+     const response=await fetch(API_BASE+'/api/reports');
+     const data=await response.json().catch(()=>({}));
+     if(!response.ok) throw new Error(data.detail||'Could not load reports');
+     reports=(data.reports||[]).map(normalize);
+     const note=document.querySelector('.pagination span:last-child');
+     if(note) note.textContent='Live data · Connected to KachraLens API';
+     render();
+   }catch(e){
+     reports=[];
+     tbody.innerHTML='<tr><td colspan="7"><div class="empty"><strong>Backend not connected</strong><br>Start FastAPI at 127.0.0.1:8000 and refresh this page.</div></td></tr>';
+     emptyState.style.display='none';
+     resultCount.textContent='Could not load report records';
+     ['total-count','pending-count','progress-count','resolved-count'].forEach(id=>document.getElementById(id).textContent='—');
+     const note=document.querySelector('.pagination span:last-child');
+     if(note) note.textContent='API offline · Start backend to view records';
+   }
+ }
+ [search,statusFilter,categoryFilter].forEach(el=>el.addEventListener('input',render));
+ document.getElementById('export-btn').addEventListener('click',()=>{
+   const headers=['ID','Title','Location','Category','Date','Priority','Status','Solved Here'];
+   const csv=[headers,...filteredReports.map(r=>[r.id,r.title,r.location,r.category,r.date,r.priority,r.status,r.solvedLocation])].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='kachralens-report-history.csv';a.click();URL.revokeObjectURL(url);
+ });
+ document.getElementById('clear-reports-btn').addEventListener('click',async()=>{
+   if(!reports.length){alert('There are no reports to delete.');return;}
+   const confirmed=confirm(`PERMANENTLY DELETE ALL ${reports.length} REPORT(S)?\n\nThis removes every report and its cleanup-verification data from the database. This cannot be undone.`);
+   if(!confirmed)return;
+   const button=document.getElementById('clear-reports-btn');
+   button.disabled=true;button.textContent='Deleting…';
+   try{
+     const response=await fetch(API_BASE+'/api/reports',{method:'DELETE'});
+     const data=await response.json().catch(()=>({}));
+     if(!response.ok)throw new Error(data.detail||'Could not delete reports.');
+     alert(data.message||`Deleted ${data.deleted_count||0} report(s).`);
+     await loadReports();
+   }catch(error){alert(error.message||'Could not delete reports. Make sure the backend is running.');}
+   finally{button.disabled=false;button.textContent='✕ Clear All Reports';}
+ });
+ const afterImageInput=document.getElementById('after-image-input');
+ let verifyReportId=null;
+ tbody.addEventListener('click',event=>{
+   const button=event.target.closest('.verify-btn');
+   if(!button) return;
+   verifyReportId=button.dataset.reportId;
+   afterImageInput.value='';
+   afterImageInput.click();
+ });
+ afterImageInput.addEventListener('change',async()=>{
+   const image=afterImageInput.files&&afterImageInput.files[0];
+   if(!image||!verifyReportId) return;
+   if(!['image/png','image/jpeg'].includes(image.type)||image.size>10*1024*1024){
+     alert('Choose a PNG or JPG cleanup photo smaller than 10 MB.'); return;
+   }
+   if(!navigator.geolocation){alert('GPS is not supported by this browser.');return;}
+   try{
+     const position=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,timeout:15000,maximumAge:0}));
+     const body=new FormData();
+     body.append('after_image',image);
+     body.append('latitude',String(position.coords.latitude));
+     body.append('longitude',String(position.coords.longitude));
+     const button=tbody.querySelector(`.verify-btn[data-report-id="${verifyReportId}"]`);
+     if(button){button.disabled=true;button.textContent='Verifying cleanup…';}
+     const response=await fetch(`${API_BASE}/api/reports/${encodeURIComponent(verifyReportId)}/verify`,{method:'POST',body});
+     const data=await response.json().catch(()=>({}));
+     if(!response.ok) throw new Error(data.detail||'Cleanup verification failed.');
+     alert(`Verification result: ${niceStatus(data.status)}\n${data.explanation||''}\nGPS: ${Number(data.latitude).toFixed(6)}, ${Number(data.longitude).toFixed(6)}`);
+     await loadReports();
+   }catch(error){
+     const msg=error&&error.code===1?'Location permission denied. Please allow GPS access.':(error.message||'Could not verify cleanup.');
+     alert(msg);
+     const button=tbody.querySelector(`.verify-btn[data-report-id="${verifyReportId}"]`);
+     if(button){button.disabled=false;button.textContent='📍 Verify / Solved Here';}
+   }
+ });
+ loadReports();
+})();
+</script>
+</body>
+</html>

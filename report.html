@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087c42">
+<title>KachraLens | Report Waste</title>
+<link rel="icon" href="assets/images/favicon.png">
+<style>
+:root{--green:#087c42;--deep:#07512f;--ink:#17251d;--muted:#617168;--line:#dce8df}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#f5faf6;font-size:14px}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit}
+.topbar{min-height:76px;padding:9px 3.5%;display:flex;align-items:center;justify-content:space-between;gap:20px;background:rgba(255,255,255,.97);border-bottom:3px solid var(--green)}
+.brand{display:flex;align-items:center;gap:11px;min-width:245px}
+.brand img{width:54px;height:54px;object-fit:contain}
+.brand h2{font-size:27px;line-height:1.1;color:var(--deep);letter-spacing:-.7px}
+.brand h2 span{color:#111}
+.brand p{font-size:11px;color:#526457;margin-top:4px}
+.nav{display:flex;align-items:center;justify-content:flex-end;gap:22px;font-size:13px;font-weight:700}
+.nav a{padding:10px 0}.nav a:hover{color:var(--green)}
+.nav .active,.nav .new{background:var(--green);color:#fff;padding:11px 15px;border-radius:8px}
+.page-hero{min-height:230px;padding:36px 18px;display:grid;place-items:center;text-align:center;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.25),rgba(255,255,255,.12)),url("assets/images/bg-dashboard-final.jpg") center 48%/cover no-repeat;border-bottom:1px solid #dce8df}
+.page-hero h1{font-size:clamp(32px,3.5vw,46px);letter-spacing:-1px;margin:0 0 10px;color:#101712}
+.page-hero h1 span{color:var(--green)}
+.page-hero p{font-size:15px;color:#26382d;line-height:1.6}
+.wrap{width:min(1180px,94%);margin:auto}
+.form-card{position:relative;margin:-30px auto 34px;padding:26px;background:rgba(255,255,255,.97);border:1px solid #dce8df;border-radius:17px;box-shadow:0 10px 30px #163e2016}
+.form-head{display:flex;align-items:center;gap:14px;margin-bottom:23px;padding-bottom:18px;border-bottom:1px solid #e7eee8}
+.form-icon{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:#e0f7e7;color:#087c42;font-size:28px;flex-shrink:0}
+.form-head h2{font-size:23px;color:var(--deep);margin-bottom:5px}
+.form-head p{font-size:13px;color:var(--muted);line-height:1.5}
+.form-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:28px}
+.field{margin-bottom:17px}
+.field label{display:block;font-weight:700;font-size:13px;margin-bottom:8px}
+.required{color:#d22}
+.field input:not([type=file]),.field select,.field textarea{width:100%;padding:13px 14px;border:1px solid #d5e1d7;border-radius:9px;background:#fff;outline:none;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px #087c4215}
+.field textarea{min-height:125px;resize:vertical;line-height:1.5}
+.hint{font-size:12px;color:var(--muted);line-height:1.6;margin-top:7px}
+.upload{min-height:250px;border:2px dashed #bcd4c2;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;cursor:pointer;background:linear-gradient(145deg,#f8fcf8,#eef8f0);transition:background .2s,border-color .2s}
+.upload:hover{background:#eaf7ed;border-color:var(--green)}
+.upload-icon{width:62px;height:62px;border-radius:50%;background:#dff4e5;color:var(--green);display:grid;place-items:center;font-size:30px;margin-bottom:12px}
+.upload strong{font-size:14px;margin-bottom:7px}
+.upload small{font-size:12px;color:var(--muted);line-height:1.6}
+.preview{max-width:100%;max-height:190px;object-fit:contain;margin-top:14px;border-radius:9px;box-shadow:0 3px 12px #0001}
+.file-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.tips{border:1px solid #dcebe0;background:#f4faf5;border-radius:10px;padding:15px;margin-top:16px}
+.tips h3{font-size:13px;margin-bottom:7px;color:var(--deep)}
+.tips p{font-size:12px;color:var(--muted);line-height:1.7}
+.form-actions{display:flex;align-items:center;gap:12px;margin-top:7px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:white;border:0;border-radius:9px;padding:14px 20px;font-weight:700;font-size:14px;cursor:pointer}
+.btn:hover{background:var(--deep)}
+.btn:disabled{opacity:.65;cursor:wait}
+.btn-secondary{background:#fff;color:var(--green);border:1px solid #b7d7c0}
+.btn-secondary:hover{background:#f2faf4;color:var(--deep)}
+.notice{display:none;margin:15px 0;padding:13px 15px;border-radius:9px;line-height:1.5}
+.notice.error{display:block;background:#fff0ef;color:#9f201a;border:1px solid #f3c9c6}
+.notice.success{display:block;background:#e8f8ec;color:#07552f;border:1px solid #bfe6c8}
+.footer{color:#073d29;text-align:center;background:linear-gradient(to bottom,rgba(255,255,255,.13),rgba(255,255,255,.08)),url("assets/images/bg-dashboard-final.jpg") center bottom/cover no-repeat;border-top:1px solid #c8e1cf}
+.tricolour{display:flex;height:9px}.tricolour span{flex:1}.saffron{background:#ff9933}.white-band{background:#fff}.india-green{background:#138808}
+.footer-content{padding:16px 15px 20px;background:linear-gradient(0deg,rgba(255,255,255,.75),rgba(255,255,255,.25))}
+.emblem{width:58px;height:58px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;border:0;border-radius:0;overflow:hidden}
+.emblem img{display:block;width:100%;height:100%;max-width:58px;max-height:58px;object-fit:contain}
+.footer strong{font-size:14px}.slogan{margin:5px 0;font-size:17px;font-weight:800;font-style:italic;color:#064b2a}.footer p{font-size:12px;margin:5px 0 0}
+@media(max-width:900px){.topbar{flex-wrap:wrap;padding:12px 4%}.nav{gap:13px;flex-wrap:wrap}.form-grid{grid-template-columns:1fr;gap:5px}.upload{min-height:210px}}
+@media(max-width:620px){.brand{min-width:0}.brand h2{font-size:22px}.brand img{width:45px;height:45px}.nav{width:100%;justify-content:space-between;gap:7px;font-size:12px}.nav .active,.nav .new{padding:9px}.page-hero{min-height:190px}.wrap{width:94%}.form-card{padding:16px;margin-top:-20px}.form-head h2{font-size:20px}.form-actions{flex-direction:column;align-items:stretch}.btn{width:100%}.slogan{font-size:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <img src="assets/images/logo.png" alt="KachraLens logo">
+    <div><h2>Kachra<span>Lens</span></h2><p>See. Report. Cleaner Tomorrow.</p></div>
+  </a>
+  <nav class="nav">
+    <a href="index.html">⌂ Home</a>
+    <a href="dashboard.html">▦ Dashboard</a>
+    <a class="active" href="report.html">▧ Report</a>
+    <a href="history.html">▣ History</a>
+    <a href="index.html#about">ⓘ About</a>
+    <a class="new" href="report.html">＋ New Report</a>
+  </nav>
+</header>
+
+<section class="page-hero">
+  <div>
+    <h1>Report a <span>Waste Issue</span></h1>
+    <p>See a waste problem? Help create a cleaner India by reporting it.<br>Share the details so the right action can be taken.</p>
+  </div>
+</section>
+
+<main class="wrap">
+  <section class="form-card">
+    <div class="form-head">
+      <div class="form-icon">▤</div>
+      <div><h2>Report Details</h2><p>Fill in the details below and upload a clear image of the waste issue.</p></div>
+    </div>
+
+    <form id="report-form" enctype="multipart/form-data">
+      <div class="form-grid">
+        <div>
+          <div class="field">
+            <label for="title">Report title <span class="required">*</span></label>
+            <input id="title" name="title" required maxlength="120" placeholder="e.g. Garbage pile near the park">
+          </div>
+          <div class="field">
+            <label for="location">Location / address <span class="required">*</span></label>
+            <input id="location" name="location" required maxlength="250" placeholder="Enter area, street or landmark">
+            <div class="form-actions" style="margin-top:9px">
+              <button class="btn btn-secondary" id="gps-btn" type="button">📍 Use my current GPS location</button>
+            </div>
+            <p class="hint" id="gps-status">GPS location not captured yet. Allow location access when your browser asks.</p>
+            <input id="latitude" name="latitude" type="hidden">
+            <input id="longitude" name="longitude" type="hidden">
+            <p class="hint">Add a nearby landmark to help identify the location.</p>
+          </div>
+          <div class="field">
+            <label for="category">Waste category <span class="required">*</span></label>
+            <select id="category" name="category" required>
+              <option value="">Choose a waste category</option>
+              <option value="household">Household waste</option>
+              <option value="plastic">Plastic waste</option>
+              <option value="construction">Construction waste</option>
+              <option value="electronic">Electronic waste</option>
+              <option value="medical">Medical waste</option>
+              <option value="organic">Organic waste</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="priority">Severity / priority <span class="required">*</span></label>
+            <select id="priority" name="priority" required>
+              <option value="">Choose priority</option>
+              <option value="high">High — urgent attention</option>
+              <option value="medium">Medium — needs action</option>
+              <option value="low">Low — routine cleanup</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="description">Description <span class="required">*</span></label>
+            <textarea id="description" name="description" required maxlength="1500" placeholder="Describe what you observed, how long it has been there, and any useful details."></textarea>
+          </div>
+        </div>
+
+        <div>
+          <div class="field">
+            <label for="image">Upload a photo <span class="required">*</span></label>
+            <label class="upload" for="image">
+              <span class="upload-icon">⇧</span>
+              <strong id="upload-label">Click to upload or drag and drop</strong>
+              <small>PNG, JPG or JPEG<br>Maximum file size: 5 MB</small>
+              <img id="preview" class="preview" alt="Selected image preview" hidden>
+            </label>
+            <input class="file-input" id="image" name="image" type="file" accept="image/png,image/jpeg" required>
+            <p class="hint">Use a clear photo of the waste. Avoid capturing faces or private information where possible.</p>
+          </div>
+          <div class="field">
+            <label for="contact">Contact information <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+            <input id="contact" name="contact" maxlength="150" placeholder="Email or phone number">
+          </div>
+          <aside class="tips">
+            <h3>🌿 Before you submit</h3>
+            <p>• Check that the location is accurate.<br>• Choose the category that best matches the waste.<br>• Upload a clear image that shows the issue.<br>• Do not include sensitive personal information.</p>
+          </aside>
+        </div>
+      </div>
+      <div id="notice" class="notice" role="status" aria-live="polite"></div>
+      <div class="form-actions">
+        <button class="btn" id="submit-btn" type="submit">➤ &nbsp; Submit Report</button>
+        <button class="btn btn-secondary" type="reset">Clear form</button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="tricolour"><span class="saffron"></span><span class="white-band"></span><span class="india-green"></span></div>
+  <div class="footer-content">
+    <div class="emblem"><img src="assets/images/ashoka-stambh.png" alt="Ashoka Lion Capital"></div>
+    <strong>KachraLens — See. Report. Cleaner Tomorrow.</strong>
+    <p class="slogan">स्वच्छ भारत का इरादा कर लिया हमने</p>
+    <p>© 2026 KachraLens. Together for a cleaner India. 🌿</p>
+  </div>
+</footer>
+
+<script>
+const form = document.getElementById('report-form');
+const fileInput = document.getElementById('image');
+const preview = document.getElementById('preview');
+const uploadLabel = document.getElementById('upload-label');
+const notice = document.getElementById('notice');
+const gpsButton = document.getElementById('gps-btn');
+const gpsStatus = document.getElementById('gps-status');
+const latitudeInput = document.getElementById('latitude');
+const longitudeInput = document.getElementById('longitude');
+
+
+gpsButton.addEventListener('click', () => {
+  if (!navigator.geolocation) {
+    gpsStatus.textContent = 'GPS is not supported by this browser. Please enter the address manually.';
+    return;
+  }
+  gpsButton.disabled = true;
+  gpsStatus.textContent = 'Getting your GPS location…';
+  navigator.geolocation.getCurrentPosition(position => {
+    latitudeInput.value = position.coords.latitude;
+    longitudeInput.value = position.coords.longitude;
+    gpsStatus.textContent = `GPS captured: ${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}`;
+    gpsButton.disabled = false;
+  }, error => {
+    const messages = {1:'Location permission was denied. Allow location access in browser settings.',2:'Your location is unavailable. Try again outdoors or check GPS/location settings.',3:'GPS request timed out. Please try again.'};
+    gpsStatus.textContent = messages[error.code] || 'Could not get GPS location. Please enter the address manually.';
+    gpsButton.disabled = false;
+  }, {enableHighAccuracy:true, timeout:15000, maximumAge:0});
+});
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files && fileInput.files[0];
+  notice.className = 'notice';
+  notice.textContent = '';
+  if (!file) {
+    preview.hidden = true;
+    preview.removeAttribute('src');
+    uploadLabel.textContent = 'Click to upload or drag and drop';
+    return;
+  }
+  if (!['image/png', 'image/jpeg'].includes(file.type)) {
+    fileInput.value = '';
+    preview.hidden = true;
+    notice.className = 'notice error';
+    notice.textContent = 'Please select a PNG or JPG image.';
+    uploadLabel.textContent = 'Click to upload or drag and drop';
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    fileInput.value = '';
+    preview.hidden = true;
+    notice.className = 'notice error';
+    notice.textContent = 'The image is larger than 5 MB. Please choose a smaller image.';
+    uploadLabel.textContent = 'Click to upload or drag and drop';
+    return;
+  }
+  preview.src = URL.createObjectURL(file);
+  preview.hidden = false;
+  uploadLabel.textContent = file.name;
+});
+
+form.addEventListener('reset', () => {
+  notice.className = 'notice';
+  notice.textContent = '';
+  preview.hidden = true;
+  preview.removeAttribute('src');
+  uploadLabel.textContent = 'Click to upload or drag and drop';
+  latitudeInput.value = '';
+  longitudeInput.value = '';
+  gpsStatus.textContent = 'GPS location not captured yet. Allow location access when your browser asks.';
+});
+
+const API_BASE = 'http://127.0.0.1:8000';
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const file = fileInput.files && fileInput.files[0];
+  if (!file) {
+    notice.className = 'notice error';
+    notice.textContent = 'Please choose a waste photo before submitting.';
+    return;
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    notice.className = 'notice error';
+    notice.textContent = 'The backend accepts images up to 10 MB. Please choose a smaller image.';
+    return;
+  }
+  const title = document.getElementById('title').value.trim();
+  const location = document.getElementById('location').value.trim();
+  const categorySelect = document.getElementById('category');
+  const category = categorySelect.options[categorySelect.selectedIndex]?.text || 'Other';
+  const prioritySelect = document.getElementById('priority');
+  const requestedPriority = prioritySelect.options[prioritySelect.selectedIndex]?.text || 'Not specified';
+  const userDescription = document.getElementById('description').value.trim();
+  const payloadDescription = [
+    'Report title: ' + title,
+    'Location: ' + location,
+    'Category: ' + category,
+    'Citizen requested priority: ' + requestedPriority,
+    'Description: ' + userDescription
+  ].join('\n');
+  const body = new FormData();
+  body.append('image', file);
+  body.append('description', payloadDescription);
+  if (latitudeInput.value && longitudeInput.value) {
+    body.append('latitude', latitudeInput.value);
+    body.append('longitude', longitudeInput.value);
+  }
+  const button = document.getElementById('submit-btn');
+  button.disabled = true;
+  const originalButtonText = button.textContent;
+  button.textContent = 'Analyzing image…';
+  notice.className = 'notice';
+  notice.textContent = 'Uploading your report and asking the AI to analyze the image. Please wait…';
+  try {
+    const response = await fetch(API_BASE + '/api/analyze', { method: 'POST', body });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.detail || 'The backend could not process this report.');
+    notice.className = 'notice success';
+    notice.innerHTML = '<strong>Report submitted successfully!</strong><br>Report ID: KL-' + String(result.report_id).padStart(4, '0') +
+      '<br>Waste type: ' + escapeHtml(result.waste_type || 'Unknown') +
+      '<br>AI severity: ' + escapeHtml(result.severity || 'Unknown') +
+      '<br>Priority: ' + escapeHtml(result.priority || 'Unknown') +
+      '<br>' + escapeHtml(result.explanation || 'AI analysis completed.') +
+      '<br><a href="history.html">View report history</a> · <a href="dashboard.html">Open dashboard</a>';
+    form.reset();
+  } catch (error) {
+    notice.className = 'notice error';
+    notice.textContent = (error.message || 'Could not submit the report.') +
+      ' Make sure the backend is running at ' + API_BASE + ' and your GROQ_API_KEY is configured.';
+  } finally {
+    button.disabled = false;
+    button.textContent = originalButtonText;
+  }
+});
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087c42">
+<title>KachraLens | Cleaner Tomorrow</title>
+<link rel="icon" href="assets/images/favicon.png">
+<style>
+:root{--green:#087c42;--deep:#07512f;--ink:#17251d;--muted:#617168;--line:#dce8df}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:linear-gradient(rgba(239,249,241,.38),rgba(239,249,241,.48)),url("assets/images/bg-dashboard.jpg") center center/cover fixed no-repeat;font-size:16px}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+.topbar{min-height:84px;padding:10px 3.5%;display:flex;align-items:center;justify-content:space-between;gap:20px;background:rgba(255,255,255,.97);border-bottom:3px solid var(--green)}
+.brand{display:flex;align-items:center;gap:11px;min-width:245px}.brand img{width:60px;height:60px;object-fit:contain}
+.brand h2{font-size:31px;line-height:1.1;color:var(--deep);letter-spacing:-.7px}.brand h2 span{color:#111}
+.brand p{font-size:13px;color:#526457;margin-top:4px}
+.nav{display:flex;align-items:center;justify-content:flex-end;gap:22px;font-size:15px;font-weight:700}.nav a{padding:10px 0}.nav a:hover{color:var(--green)}.nav .new{background:var(--green);color:#fff;padding:11px 15px;border-radius:8px}
+.hero{min-height:570px;display:flex;align-items:center;padding:72px 7%;background:linear-gradient(90deg,rgba(248,255,249,.88) 0%,rgba(248,255,249,.70) 42%,rgba(248,255,249,.12) 100%),url("assets/images/bg-dashboard.jpg") center/cover no-repeat}
+.hero-content{max-width:760px}.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#e4f5e8;color:var(--deep);border:1px solid #c8e8d0;padding:10px 15px;border-radius:30px;font-size:14px;font-weight:800;margin-bottom:20px}
+.dot{width:8px;height:8px;background:#168746;border-radius:50%}
+.hero h1{font-size:clamp(48px,6vw,78px);line-height:1.06;letter-spacing:-2px;color:#10251a;margin-bottom:18px}.hero h1 span{color:var(--green)}
+.hero p{font-size:20px;line-height:1.75;color:#425449;max-width:560px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:27px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:16px 23px;border-radius:10px;font-size:16px;font-weight:800;border:1px solid var(--green);transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-1px)}.primary{background:var(--green);color:#fff}.primary:hover{background:var(--deep)}.secondary{background:#fff;color:var(--green)}
+.trust{display:flex;gap:20px;flex-wrap:wrap;margin-top:27px;color:#344f3d;font-size:14px;font-weight:700}.trust span{display:flex;gap:6px;align-items:center}
+.wrap{width:min(1160px,92%);margin:auto}
+.section{padding:76px 0;background:rgba(248,253,249,.60)}.section-head{text-align:center;max-width:690px;margin:0 auto 30px}.section-head .tag{font-size:13px;letter-spacing:1.3px;text-transform:uppercase;color:var(--green);font-weight:900}.section-head h2{font-size:clamp(32px,3.5vw,44px);letter-spacing:-.8px;color:var(--deep);margin:10px 0}.section-head p{font-size:17px;line-height:1.75;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:17px;padding:30px;box-shadow:0 8px 24px #17402108}
+.step-num{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#e2f6e8;color:var(--green);font-size:23px;margin-bottom:17px}
+.step h3{font-size:21px;color:var(--deep);margin-bottom:9px}.step p{font-size:16px;color:var(--muted);line-height:1.75}
+.impact{background:linear-gradient(rgba(229,247,233,.84),rgba(229,247,233,.84)),url("assets/images/bg-dashboard.jpg") center/cover fixed no-repeat;border-top:1px solid #d6eadb;border-bottom:1px solid #d6eadb}
+.impact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:35px;align-items:center}
+.impact-copy h2{font-size:clamp(34px,4vw,46px);line-height:1.18;letter-spacing:-.9px;color:var(--deep);margin:12px 0 14px}.impact-copy p{font-size:17px;line-height:1.8;color:#526458;max-width:570px}
+.impact-points{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.point{padding:20px;border-radius:14px;background:rgba(255,255,255,.88);border:1px solid #d6eadb}.point strong{display:block;color:var(--deep);font-size:17px;margin-bottom:6px}.point span{font-size:14px;line-height:1.6;color:var(--muted)}
+.cta{margin:0 auto 70px;padding:42px 46px;border-radius:18px;background:linear-gradient(115deg,#07512f,#0b8a49);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:25px}
+.cta h2{font-size:clamp(29px,3.4vw,40px);letter-spacing:-.7px;margin-bottom:9px}.cta p{font-size:16px;line-height:1.7;color:#e2f5e8;max-width:620px}.cta .btn{background:#fff;color:var(--deep);border-color:#fff;white-space:nowrap}
+.footer{color:#073d29;text-align:center;background:linear-gradient(0deg,rgba(255,255,255,.78),rgba(255,255,255,.22)),url("assets/images/bg-dashboard.jpg") center bottom/cover no-repeat;border-top:1px solid #c8e1cf}
+.tricolour{display:flex;height:9px}.tricolour span{flex:1}.saffron{background:#ff9933}.white-band{background:#fff}.india-green{background:#138808}
+.footer-content{padding:17px 15px 22px}
+.emblem{width:58px;height:58px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;border:0;border-radius:0;overflow:hidden}
+.emblem img{display:block;width:100%;height:100%;max-width:58px;max-height:58px;object-fit:contain}
+.emblem img{display:block;width:100%;height:100%;max-width:58px;max-height:58px;object-fit:contain}.footer strong{font-size:14px}.slogan{margin:5px 0;font-size:17px;font-weight:800;font-style:italic;color:#064b2a}.footer p{font-size:12px;margin:5px 0 0}
+@media(max-width:850px){.topbar{flex-wrap:wrap;padding:12px 4%}.nav{gap:13px;flex-wrap:wrap}.hero{min-height:480px;padding:55px 5%}.impact-grid{grid-template-columns:1fr}.cta{align-items:flex-start;flex-direction:column}.steps{gap:12px}.step{padding:22px}}
+@media(max-width:620px){.brand{min-width:0}.brand h2{font-size:25px}.brand img{width:48px;height:48px}.brand p{font-size:11px}.nav{width:100%;justify-content:space-between;gap:7px;font-size:13px}.nav .new{padding:9px}.hero{min-height:460px;background-position:60% center;padding:42px 5%}.hero h1{font-size:clamp(40px,10vw,56px);letter-spacing:-1.2px}.hero p{font-size:17px}.hero-actions .btn{width:100%}.trust{gap:12px;font-size:12px}.section{padding:48px 0}.section-head h2{font-size:30px}.section-head p{font-size:15px}.steps{grid-template-columns:1fr}.impact-points{grid-template-columns:1fr 1fr}.cta{padding:28px 22px;margin-bottom:42px}.cta h2{font-size:29px}.cta p{font-size:15px}.cta .btn{width:100%}.slogan{font-size:14px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="KachraLens home"><img src="assets/images/logo.png" alt="KachraLens logo"><div><h2>Kachra<span>Lens</span></h2><p>See. Report. Cleaner Tomorrow.</p></div></a>
+  <nav class="nav" aria-label="Main navigation"><a href="index.html">⌂ Home</a><a href="dashboard.html">▦ Dashboard</a><a href="report.html">▧ Report</a><a href="history.html">▣ History</a><a href="#about">ⓘ About</a><a class="new" href="report.html">＋ New Report</a></nav>
+</header>
+<main>
+<section class="hero">
+  <div class="hero-content">
+    <div class="eyebrow"><span class="dot"></span> A smarter step towards Swachh Bharat</div>
+    <h1>See the waste.<br><span>Report the change.</span></h1>
+    <p>KachraLens helps communities bring waste concerns into focus. Report a problem, track its progress, and take one more step towards cleaner neighbourhoods.</p>
+    <div class="hero-actions"><a class="btn primary" href="report.html">＋ Report a Waste Issue <span>→</span></a><a class="btn secondary" href="dashboard.html">Explore Dashboard ↗</a></div>
+    <div class="trust"><span>✓ Community-focused</span><span>✓ Simple reporting</span><span>✓ Cleaner surroundings</span></div>
+  </div>
+</section>
+<section class="section" id="how-it-works">
+  <div class="wrap">
+    <div class="section-head"><span class="tag">How it works</span><h2>Small actions. Cleaner communities.</h2><p>Help bring attention to local waste issues through a simple reporting flow.</p></div>
+    <div class="steps">
+      <article class="step"><div class="step-num">▧</div><h3>1. Capture the issue</h3><p>Take a clear photo of the waste issue and add the location so it can be identified.</p></article>
+      <article class="step"><div class="step-num">➤</div><h3>2. Submit a report</h3><p>Choose a waste category, describe what you observed, and submit the report details.</p></article>
+      <article class="step"><div class="step-num">✓</div><h3>3. Follow progress</h3><p>Visit the dashboard and history pages to review available report information and status.</p></article>
+    </div>
+  </div>
+</section>
+<section class="section impact" id="about">
+  <div class="wrap impact-grid">
+    <div class="impact-copy"><span class="tag" style="color:#087c42;font-weight:900;letter-spacing:1.2px">OUR PURPOSE</span><h2>A cleaner India begins with what we notice.</h2><p>Waste management works better when local problems are visible and clearly described. KachraLens is designed to make reporting straightforward and to help people keep track of waste concerns in their neighbourhoods.</p><div class="hero-actions"><a class="btn primary" href="report.html">Make a Report →</a></div></div>
+    <div class="impact-points">
+      <div class="point"><strong>📍 Clear location</strong><span>Help identify where the waste issue is happening.</span></div>
+      <div class="point"><strong>📷 Visual evidence</strong><span>Add a photo to explain the concern more clearly.</span></div>
+      <div class="point"><strong>♻️ Better awareness</strong><span>Make waste concerns easier to communicate.</span></div>
+      <div class="point"><strong>🌱 Shared responsibility</strong><span>Encourage everyone to contribute to cleaner spaces.</span></div>
+    </div>
+  </div>
+</section>
+<section class="wrap cta">
+  <div><h2>Noticed a waste problem nearby?</h2><p>Don't let it go unnoticed. Share the details and help make your neighbourhood cleaner.</p></div>
+  <a class="btn" href="report.html">＋ Start a Report</a>
+</section>
+</main>
+<footer class="footer"><div class="tricolour"><span class="saffron"></span><span class="white-band"></span><span class="india-green"></span></div><div class="footer-content"><div class="emblem"><img src="assets/images/ashoka-stambh.png" alt="Ashoka Lion Capital"></div><strong>KachraLens — See. Report. Cleaner Tomorrow.</strong><p class="slogan">स्वच्छ भारत का इरादा कर लिया हमने</p><p>© 2026 KachraLens. Together for a cleaner India. 🌿</p><p id="backend-status" aria-live="polite">Checking backend connection…</p></div></footer>
+
+<script>
+(async()=>{
+ const el=document.getElementById('backend-status');
+ if(!el)return;
+ try{
+   const r=await fetch('http://127.0.0.1:8000/health');
+   const d=await r.json();
+   if(!r.ok)throw new Error('offline');
+   el.textContent='Backend: '+(d.server||'Connected')+' · Database: '+(d.database||'Unknown')+' · AI: '+(d.ai||'Unknown');
+ }catch(e){el.textContent='Backend offline — start the FastAPI server to enable live reports.';}
+})();
+</script>
+
+</body>
+</html>

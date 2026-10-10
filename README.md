@@ -1,4 +1,4 @@
-::: {align="center"}
+
 # ♻️ KachraLens
 
 ### See the waste. Report the problem. Track the cleanup.
